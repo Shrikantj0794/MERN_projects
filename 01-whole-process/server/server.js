@@ -1,19 +1,13 @@
-// require express from express
 const express = require("express")
-
-// create server using express
-// path, root, rasta
 const app = express();
-app.get("/", (req,res)=>{
-    res.status(200).send("welcome");
-});
+const router = require("./router/auth-router")
 
-app.get("/register", (req,res)=>{
-    res.status(302).send("Registration form")
-})
+// use router in server.js
+app.use("/api", router);
 
-// seeing our website on which brawser and port for local host,
 const PORT = 5000;
 app.listen(PORT, ()=>{
     console.log("server is runing");
 });
+
+// maintain clean and less code 
