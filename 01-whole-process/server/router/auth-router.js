@@ -1,18 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const {register,login} = require('../controllers/auth-controller')
 
-// first way of root or path define
-router.get("/register", (req,res)=>{
-    res
-    .status(200)
-    .send("welcom to registration form using router");
-});
-
-// second way of (most prefer)
-router.route("/login").get((req,res)=>{
-    res
-    .status(200)
-    .send("welcom to the login page")
-})
+router.route("/register").get(register);
+router.route("/login").get(login)
 
 module.exports = router
