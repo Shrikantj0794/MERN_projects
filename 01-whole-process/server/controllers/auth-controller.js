@@ -1,13 +1,30 @@
 const register = (req,res)=>{
-    res
-    .status(200)
-    .send("welcom to the register page")
+    try {
+        console.log(req.body)
+
+        res
+        .status(200)
+        .json(req.body)
+        
+    } catch (error) {
+        res
+        .status(401)
+        .json("internal server error")
+    }
 };
 
 const login = (req,res)=>{
-    res
-    .status(200)
-    .send("welcom to login form using router");
+    try {
+        console.log(req.body)
+        res
+        .status(200)
+        .json(req.body);
+        
+    } catch (error) {
+        res
+        .status(401)
+        .json("internal server error");   
+    }
 }
 
 module.exports = {register, login}
