@@ -4,7 +4,7 @@ const register = (req,res)=>{
 
         res
         .status(200)
-        .json(req.body)
+        .json({message: req.body})
         
     } catch (error) {
         res
@@ -18,7 +18,7 @@ const login = (req,res)=>{
         console.log(req.body)
         res
         .status(200)
-        .json(req.body);
+        .json({message: req.body});
         
     } catch (error) {
         res
