@@ -1,11 +1,33 @@
-const register = (req,res)=>{
-    try {
-        console.log(req.body)
+const User = require("../model/user-model")
 
-        res
-        .status(200)
-        .json({message: req.body})
+//--------------------
+// Registration Logic
+//--------------------
+
+//--------------------
+// user Registration Logic
+//--------------------
+
+// 1.Get registration data.
+// 2.Check Email existence
+// 3.Hash Password
+// 4.Create User
+// 5.Save to DB
+// 6.Respond
+
+const register = async (req,res)=>{
+    try {
+        const {username, email, phone, password}= req.body
+
+        // 2.Check Email existence
+        const userExist = await User.findOne({email:email})
+        if (userExist) {
+            return res.status(401).json({message: "User already exist"})
+        }
+        const usercreate = await User.create({username, email, phone, password})
+        res.status(200).json({usercreate})
         
+
     } catch (error) {
         res
         .status(401)
