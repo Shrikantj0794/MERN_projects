@@ -1,5 +1,5 @@
 const User = require("../model/user-model")
-
+const bcrypt = require("bcrypt")
 //--------------------
 // Registration Logic
 //--------------------
@@ -24,7 +24,10 @@ const register = async (req,res)=>{
         if (userExist) {
             return res.status(401).json({message: "User already exist"})
         }
-        const usercreate = await User.create({username, email, phone, password})
+        const saltRound = 10;
+        const hash_Password = await bcrypt.hash(password,saltRound)
+        
+        const usercreate = await User.create({username, email, phone, password:hash_Password})
         res.status(200).json({usercreate})
         
 
