@@ -42,18 +42,32 @@ const register = async (req,res)=>{
     }
 };
 
-const login = (req,res)=>{
+const login = async (req,res)=>{
     try {
-        console.log(req.body)
-        res
-        .status(200)
-        .json({message: req.body});
-        
-    } catch (error) {
-        res
-        .status(401)
-        .json("internal server error");   
-    }
+        const {email, password}= req.body;
+
+        const loginuserExist = await User.findOne({email});
+
+            if (!loginuserExist) {
+                return res.status(404).json({msg: "Invalid Credentials"})
+            }
+        // Bcrypt the password and compare it
+        const user = await bcrypt.compare(password, loginuserExist.password)
+            
+            if (user) {
+                   return res.status(200)
+                    .json({msg: "Login Successfully" , 
+                    token: await loginuserExist.generateToken(),
+                    userId: loginuserExist._id.toString(),
+                })
+            }else{
+                res.status(400)
+                    .json({msg: "Invalid Password or Email"})
+            }
+
+        }catch (error) {
+            console.error(error);
+        }
 }
 
 module.exports = {register, login}
