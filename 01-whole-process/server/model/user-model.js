@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     isAdmin: {type:Boolean, default:false}
 });
 
-
+// hashing password
 userSchema.pre("save", async function(next){
     const user = this;
     
@@ -27,6 +27,10 @@ userSchema.pre("save", async function(next){
     }
 });
 
+//compare password
+userSchema.methods.comparepass = async function (password){
+    return  await bcrypt.compare(password, this.password)
+}
 userSchema.methods.generateToken = async function (){
     try {
          return jwt.sign({
@@ -43,6 +47,7 @@ userSchema.methods.generateToken = async function (){
         console.error(error);   
     }
 }
+
 
 const User = new mongoose.model("User", userSchema)
 module.exports = User

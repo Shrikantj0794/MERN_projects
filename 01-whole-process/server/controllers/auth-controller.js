@@ -24,7 +24,6 @@ const register = async (req,res)=>{
         if (userExist) {
             return res.status(401).json({message: "User already exist"})
         }
-        
 
         const userCreate = await User.create({username, email, phone, password})
         
@@ -52,7 +51,7 @@ const login = async (req,res)=>{
                 return res.status(404).json({msg: "Invalid Credentials"})
             }
         // Bcrypt the password and compare it
-        const user = await bcrypt.compare(password, loginuserExist.password)
+        const user = await loginuserExist.comparepass(password);
             
             if (user) {
                    return res.status(200)
