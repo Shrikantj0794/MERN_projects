@@ -24,11 +24,15 @@ const register = async (req,res)=>{
         if (userExist) {
             return res.status(401).json({message: "User already exist"})
         }
-        // const saltRound = 10;
-        // const hash_Password = await bcrypt.hash(password,saltRound)
+        
 
-        const usercreate = await User.create({username, email, phone, password})
-        res.status(200).json({usercreate})
+        const userCreate = await User.create({username, email, phone, password})
+        
+        res.status(200)
+        .json({msg:userCreate, 
+                token: await userCreate.generateToken(),
+                userId: userCreate._id.toString(),
+                })
         
 
     } catch (error) {
