@@ -9,8 +9,16 @@ const validate = (schema) => async (req, res, next) => {
     req.body = result.data;
     next();
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ msg: "An unexpected error occurred" });
+    const status = 422;
+    const message = err.errors[0].message;
+
+    const error = {
+      status,
+      message
+    }
+    console.log(error)
+    next(error)
+  
   }
 };
 
