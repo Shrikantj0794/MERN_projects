@@ -48,6 +48,6 @@ userSchema.methods.generateToken = async function (){
     }
 }
 
-
+// create model of user schema
 const User = new mongoose.model("User", userSchema)
 module.exports = User
