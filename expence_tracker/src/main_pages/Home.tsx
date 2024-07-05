@@ -18,43 +18,39 @@ import { columns } from "../shadcn/components/ui/transactioncolumn";
 import { useStore } from '../store'
 
 const Home = () => {
-  const {loggedIn, logOut} = useStore();
+  const { loggedIn, logOut } = useStore();
   const navigate = useNavigate();
   const [transactionList, setTransactionList] = useState([]);
 
   async function signout() {
     signOut(auth).then(() => {
-      logOut()
+      logOut();
       navigate("/login");
     });
   }
 
-  useEffect(() => {
+  const getData = async () => {
+    try {
+      const q = query(collection(db, "Transactions"), where("uid", "==", auth.currentUser?.uid));
 
-    if(!loggedIn){
-      navigate("/login")
+      const querySnapshot = await getDocs(q);
+      let list: any = [];
+      querySnapshot.forEach((doc) => {
+        list.push(doc.data());
+      });
+      setTransactionList(list);
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
     }
+  };
 
-    const getData = async () => {
-      try {
-        const q = query(collection(db, "Transactions"), where("uid", "==", auth.currentUser?.uid));
-
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-        });
-        let list:any = [];
-        querySnapshot.forEach((doc) => {
-          list.push(doc.data());
-        });
-        setTransactionList(list);
-      } catch (error) {
-        console.error("Error fetching transactions:", error);
-      }
-    };
-    getData();
-  }, []);
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate("/login");
+    } else {
+      getData();
+    }
+  }, [loggedIn, navigate]);
 
   useEffect(() => {
     console.log("Updated transactionList:", transactionList);
@@ -76,7 +72,7 @@ const Home = () => {
               Manage your finance, keep updating your transition
             </DialogDescription>
           </DialogHeader>
-          <TransactionForm />
+          <TransactionForm onTransactionAdded={getData} />
         </DialogContent>
       </Dialog>
 
