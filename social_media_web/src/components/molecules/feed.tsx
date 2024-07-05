@@ -1,8 +1,8 @@
-
+import NewPostForm from '../molecules/NewpostForm'
 function feed() {
   return (
-    <div>
-      <h1>FEED</h1>
+    <div className='p-4'>
+      <NewPostForm></NewPostForm>
     </div>
   )
 }

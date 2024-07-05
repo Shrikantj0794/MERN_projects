@@ -9,7 +9,6 @@ interface LoginFormInterface {
     email: string,
     password: string
   }
-//   Google Authanatication
   const provider = new GoogleAuthProvider();
 
 function Login() {
@@ -55,7 +54,7 @@ function Login() {
       {...register("password")}
     />
     <Button type="submit" color="secondary" className="w-full">Login</Button>
-    //   Google Authanatication
+    
     <Button  color="secondary" className="w-full" onClick={signInWithGoogle}>Login With Google</Button>
     </form>
     <CardFooter>
