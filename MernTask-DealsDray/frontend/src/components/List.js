@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 function List() {
   const [data, setData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
   const getData = async () => {
     try {
       const response = await fetch('http://localhost:5000/');
@@ -34,7 +36,16 @@ function List() {
       getData();
     }
   }
-  
+  //search query
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredData = data.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+
   useEffect(() => {
     getData();
   }, []);
@@ -42,6 +53,22 @@ function List() {
   
   return (
     <div className="container mt-5">
+       <div className="d-flex justify-content-between align-items-center mb-3">
+        <span>Total Count: {data.length}</span>
+        <button className="btn btn-primary" onClick={() => navigate(-1)}>Create Employee</button>
+      </div>
+      <br/>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <div className="flex-grow-1"></div>
+        <input
+          type="text"
+          className="form-control w-25"
+          placeholder="Search by name"
+          value={searchQuery}
+          onChange={handleSearch}
+        />
+      </div>
+      
       <table className="table">
         <thead>
           <tr>
@@ -57,7 +84,7 @@ function List() {
           </tr>
         </thead>
         <tbody>
-          {data.map((item, index) => (
+          {filteredData.map((item, index) => (
             <tr key={item.id}>
               <td>{index + 1}</td>
               <td>{item.name}</td>

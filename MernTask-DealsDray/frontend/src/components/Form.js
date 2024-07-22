@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Form() {
   const [formData, setFormData] = useState({
@@ -9,8 +10,8 @@ function Form() {
     gender: '',
     courses: [],
   });
- 
-
+  
+  const navigate = useNavigate()
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -47,6 +48,7 @@ function Form() {
       } else {
         const result = await response.json();
         console.log(result);
+        navigate('/list')
       }
       setFormData({
         name: '',
@@ -72,7 +74,7 @@ function Form() {
 
   return (
     <div className="container mt-5 col-6">
-      <form className="needs-validation" noValidate onSubmit={handleSubmit}>
+      <form className="needs-validation mb-3" noValidate onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Name</label>
           <input type="text" className="form-control" id="name" name="name" value={formData.name} onChange={handleChange} required />

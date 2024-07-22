@@ -13,14 +13,16 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link to={'/'} className="nav-link active">Home</Link>
+                <Link to={'/home'} className="nav-link active">Home</Link>
               </li>
               <li className="nav-item">
                 <Link to={'/list'} className="nav-link">Employee List</Link>
               </li>
             </ul>
             <div className="ms-auto">
+              <Link to={'/'}>
               <button className="btn btn-outline-success" type="submit">Logout</button>
+              </Link>
             </div>
           </div>
         </div>
